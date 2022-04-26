@@ -1,4 +1,12 @@
-package entities
+package objects
+
+type User struct {
+	Id        int    `json:"id"`
+	Username  string `json:"username"`
+	Email     string `json:"email"`
+	Passwd    string `json:"password"`
+	AuthToken string `json:"authToken"`
+}
 
 type Customer struct {
 	Id          string `json:"id"`
@@ -9,6 +17,7 @@ type Customer struct {
 	Nationality string `json:"nationality"`
 	Address     string `json:"address"`
 }
+
 type Affiliate struct {
 	Id            string `json:"id"`
 	AffiliateName string `json:"affiliateName"`
@@ -18,12 +27,7 @@ type Affiliate struct {
 	Fax           string `json:"fax"`
 	Email         string `json:"email"`
 }
-type User struct {
-	Id       string `json:"id"`
-	Username string `json:"username"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
-}
+
 type Transaction struct {
 	Id           string `json:"id"`
 	SenderName   string `json:"senderName"`
@@ -32,6 +36,7 @@ type Transaction struct {
 	Money        string `json:"money"`
 	Message      string `json:"message"`
 }
+
 type Document struct {
 	Id               string `json:"id"`
 	DocType          string `json:"docType"`
