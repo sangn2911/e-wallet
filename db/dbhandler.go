@@ -20,7 +20,7 @@ func StartSqlConnection() {
 		User:   os.Getenv("DBUSER"),
 		Passwd: os.Getenv("DBPASS"),
 		Net:    "tcp",
-		Addr:   "192.168.1.7:3306",
+		Addr:   os.Getenv("SQLADDR")+":3306",
 		DBName: "kaasi",
 	}
 
