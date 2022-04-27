@@ -172,3 +172,23 @@ VALUES
     'C:/fakepath/a8187OZ_460svav1.mp4',
     2
   );
+
+INSERT INTO
+  `transaction`
+VALUES
+  (
+    1,
+    'user1',
+    'user2',
+    '28/3/2022',
+    '100.000.000',
+    'Love love'
+  ),
+(
+    2,
+    'user1',
+    'user2',
+    '14/2/2022',
+    '100.000.000',
+    'Love love'
+  );

@@ -38,7 +38,6 @@ func AddTransaction(transaction objects.Transaction) (objects.Transaction, error
 	var temp objects.Transaction
 	result, err := db.DBconn.Exec(
 		"INSERT INTO transaction (senderName,receiverName,date,money,message) VALUES (?,?,?,?,?)",
-		transaction.Id,
 		transaction.SenderName,
 		transaction.ReceiverName,
 		transaction.Date,

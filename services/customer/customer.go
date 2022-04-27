@@ -57,7 +57,10 @@ func AddCustomerInfo(c *gin.Context) {
 	var customers objects.Customer
 
 	if err := c.BindJSON(&customers); err != nil {
-		return
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": err.Error()},
+		)
 	}
 
 	customers, status := dbcustomer.InsertCustomer(customers)
@@ -89,7 +92,10 @@ func EditCustomerInfo(c *gin.Context) {
 	var customers objects.Customer
 
 	if err := c.BindJSON(&customers); err != nil {
-		return
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": err.Error()},
+		)
 	}
 
 	customer, status := dbcustomer.EditCustomerInfo(customers)
