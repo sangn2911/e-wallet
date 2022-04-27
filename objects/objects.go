@@ -19,7 +19,7 @@ type Customer struct {
 }
 
 type Affiliate struct {
-	Id            string `json:"id"`
+	Id            int    `json:"id"`
 	AffiliateName string `json:"affiliateName"`
 	District      string `json:"district"`
 	Address       string `json:"address"`
@@ -29,7 +29,7 @@ type Affiliate struct {
 }
 
 type Transaction struct {
-	Id           string `json:"id"`
+	Id           int    `json:"id"`
 	SenderName   string `json:"senderName"`
 	ReceiverName string `json:"receiverName"`
 	Date         string `json:"date"`
@@ -38,7 +38,7 @@ type Transaction struct {
 }
 
 type Document struct {
-	Id               string `json:"id"`
+	Id               int    `json:"id"`
 	DocType          string `json:"docType"`
 	DocNumber        string `json:"docNumber"`
 	IssuingAuthority string `json:"issuingAuthority"`
@@ -59,4 +59,29 @@ func (user *User) Clone(obj User) {
 	user.Username = obj.Username
 	user.Email = obj.Email
 	user.Passwd = obj.Passwd
+}
+
+func (tran *Transaction) Clone(obj Transaction) {
+	tran.SenderName = obj.SenderName
+	tran.ReceiverName = obj.ReceiverName
+	tran.Date = obj.Date
+	tran.Money = obj.Money
+	tran.Message = obj.Message
+}
+
+func (doc *Document) Clone(obj Document) {
+	doc.DocType = obj.DocType
+	doc.DocNumber = obj.DocNumber
+	doc.IssuingAuthority = obj.DocNumber
+	doc.ExpiryDate = obj.ExpiryDate
+	doc.Img = obj.Img
+}
+
+func (affi *Affiliate) Clone(obj Affiliate) {
+	affi.AffiliateName = obj.AffiliateName
+	affi.District = obj.District
+	affi.Address = obj.Address
+	affi.PhoneNumber = obj.PhoneNumber
+	affi.Fax = obj.Fax
+	affi.Email = obj.Email
 }

@@ -4,6 +4,7 @@ import (
 	_ "net/http"
 
 	"e-wallet/api/services/auth"
+	"e-wallet/api/services/customer"
 	"e-wallet/api/services/user"
 
 	"github.com/gin-gonic/gin"
@@ -12,21 +13,31 @@ import (
 func ApiRoutes(r *gin.Engine) {
 
 	r.GET("/", auth.WelcomeAPI)
-
 	APIs := r.Group("/api")
 
-	userAuth := APIs.Group("/users")
+	userAPI := APIs.Group("/users")
 	{
-		userAuth.POST("/register", auth.RegisterUser)
-		userAuth.POST("/login", auth.LoginUser)
-		userAuth.GET("/", user.GetAllUsers)
-		userAuth.GET("/:id", user.GetUserInfo)
+		userAPI.POST("/register", auth.RegisterUser)
+		userAPI.POST("/login", auth.LoginUser)
+		userAPI.GET("/", user.GetAllUsers)
+		userAPI.GET("/:id", user.GetUserInfo)
 	}
-	customerAuth := APIs.Group("/customers")
+
+	customerAPI := APIs.Group("/customers")
 	{
-		customerAuth.GET("/", user.GetAllCustomers)
-		customerAuth.GET("/:id", user.GetCustomerInfo)
-		customerAuth.POST("/add", user.AddCustomerInfo)
-		customerAuth.PUT("/update", user.EditCustomerInfo)
+		customerAPI.GET("/", customer.GetAllCustomers)
+		customerAPI.GET("/:id", customer.GetCustomerInfo)
+		customerAPI.POST("/add", customer.AddCustomerInfo)
+		customerAPI.PUT("/update", customer.EditCustomerInfo)
+		customerAPI.DELETE("/:id", customer.DeleteCustomerInfo)
+	}
+
+	docsAPI := APIs.Group("/docs")
+	{
+		docsAPI.GET("/", customer.GetAllCustomers)
+		docsAPI.GET("/:id", customer.GetCustomerInfo)
+		docsAPI.POST("/add", customer.AddCustomerInfo)
+		docsAPI.PUT("/update", customer.EditCustomerInfo)
+
 	}
 }

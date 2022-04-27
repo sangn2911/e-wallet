@@ -10,6 +10,10 @@ var CustomerNotFound error
 var ExistCustomer error
 var UsedEmail error
 
+var DocumentNotFound error
+
+var AffiliateNotFound error
+
 func InitCustomStatus() {
 	UserNotFound = errors.New("UserNotFound")
 	ExistUser = errors.New("ExistUser")
@@ -18,4 +22,8 @@ func InitCustomStatus() {
 	CustomerNotFound = errors.New("CustomerNotFound")
 	ExistCustomer = errors.New("ExistCustomer")
 	UsedEmail = errors.New("UsedEmail")
+
+	DocumentNotFound = errors.New("DocumentNotFound")
+
+	AffiliateNotFound = errors.New("AffiliateNotFound")
 }

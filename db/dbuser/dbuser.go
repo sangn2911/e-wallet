@@ -9,7 +9,6 @@ import (
 )
 
 func RegisterUser(user objects.User) (objects.User, error) {
-
 	temp, status := IsUserExist(user.Username)
 
 	if errors.Is(status, customStatus.UserNotFound) {
@@ -44,7 +43,6 @@ func RegisterUser(user objects.User) (objects.User, error) {
 }
 
 func LoginUser(user objects.User) (objects.User, error) {
-
 	temp, status := IsUserExist(user.Username)
 
 	if errors.Is(status, customStatus.ExistUser) {

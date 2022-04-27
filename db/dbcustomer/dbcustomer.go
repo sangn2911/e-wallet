@@ -122,7 +122,7 @@ func EditCustomerInfo(customer objects.Customer) (objects.Customer, error) {
 	return temp, nil
 }
 
-func DeleteCustomer(id int) error {
+func DeleteCustomer(id string) error {
 	_, err := db.DBconn.Exec("DELETE FROM customer WHERE id=?", id)
 	if err != nil {
 		return err
