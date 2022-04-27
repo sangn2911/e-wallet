@@ -35,7 +35,8 @@ CREATE TABLE `document` (
   `docNumber` varchar(128) NOT NULL,
   `issuingAuthority` varchar(255) NOT NULL,
   `expiryDate` varchar(255) NOT NULL,
-  `img` varchar(255) NOT NULL,
+  `img` varchar(500) NOT NULL,
+  `userid` int NOT NULL,
   PRIMARY KEY (`id`)
 );
 
@@ -68,7 +69,14 @@ VALUES
   ('user3', 'user3@gmail.com', 'pass3');
 
 INSERT INTO
-  `customer` (firstName, lastName, dateOfBirth, email, nationality, address)
+  `customer` (
+    firstName,
+    lastName,
+    dateOfBirth,
+    email,
+    nationality,
+    address
+  )
 VALUES
   (
     'Nguyen',
@@ -128,4 +136,39 @@ VALUES
     '0123456789',
     'fax3',
     'email3'
+  );
+
+INSERT INTO
+  document (
+    docType,
+    docNumber,
+    issuingAuthority,
+    expiryDate,
+    img,
+    userid
+  )
+VALUES
+  (
+    'jpg',
+    '1',
+    'user1',
+    '16/10/2022',
+    'imagewallpaper',
+    1
+  ),
+  (
+    'mp3',
+    '2',
+    'user2',
+    '5/6/2025',
+    'C:/fakepath/262052169_1420196271763336_3407329124257330612_n-removebg-preview.png',
+    1
+  ),
+  (
+    'docType',
+    '3',
+    'user1',
+    '1/1/2023',
+    'C:/fakepath/a8187OZ_460svav1.mp4',
+    2
   );

@@ -5,6 +5,7 @@ import (
 
 	"e-wallet/api/services/auth"
 	"e-wallet/api/services/customer"
+	"e-wallet/api/services/doc"
 	"e-wallet/api/services/user"
 
 	"github.com/gin-gonic/gin"
@@ -34,10 +35,8 @@ func ApiRoutes(r *gin.Engine) {
 
 	docsAPI := APIs.Group("/docs")
 	{
-		docsAPI.GET("/", customer.GetAllCustomers)
-		docsAPI.GET("/:id", customer.GetCustomerInfo)
-		docsAPI.POST("/add", customer.AddCustomerInfo)
-		docsAPI.PUT("/update", customer.EditCustomerInfo)
 
+		docsAPI.GET("/:userid", doc.GetDocumentsOfUser)
+		docsAPI.POST("/add", doc.AddDocumentInfo)
 	}
 }

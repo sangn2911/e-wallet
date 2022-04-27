@@ -44,6 +44,7 @@ type Document struct {
 	IssuingAuthority string `json:"issuingAuthority"`
 	ExpiryDate       string `json:"expiryDate"`
 	Img              string `json:"img"`
+	UserId           int    `json:"userid"`
 }
 
 func (customer *Customer) Clone(obj Customer) {
@@ -75,6 +76,7 @@ func (doc *Document) Clone(obj Document) {
 	doc.IssuingAuthority = obj.DocNumber
 	doc.ExpiryDate = obj.ExpiryDate
 	doc.Img = obj.Img
+	doc.UserId = obj.UserId
 }
 
 func (affi *Affiliate) Clone(obj Affiliate) {
