@@ -8,6 +8,7 @@ var WrongPasswd error
 
 var CustomerNotFound error
 var ExistCustomer error
+var UsedEmail error
 
 func InitCustomStatus() {
 	UserNotFound = errors.New("UserNotFound")
@@ -16,4 +17,5 @@ func InitCustomStatus() {
 
 	CustomerNotFound = errors.New("CustomerNotFound")
 	ExistCustomer = errors.New("ExistCustomer")
+	UsedEmail = errors.New("UsedEmail")
 }

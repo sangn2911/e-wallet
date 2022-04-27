@@ -24,5 +24,6 @@ func ApiRoutes(r *gin.Engine) {
 	{
 		customerAuth.GET("/", user.GetAllCustomers)
 		customerAuth.GET("/:id", user.GetCustomerInfo)
+		customerAuth.POST("/add", user.AddCustomers)
 	}
 }

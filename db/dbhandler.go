@@ -123,7 +123,7 @@ func GetUserWithID(id string) (objects.User, error) {
 		}
 	}
 
-	return temp, customStatus.ExistUser
+	return temp, nil
 }
 
 func GetAllUsers() ([]objects.User, error) {
@@ -143,7 +143,7 @@ func GetAllUsers() ([]objects.User, error) {
 		objectLst = append(objectLst, temp)
 	}
 
-	return objectLst, customStatus.ExistUser
+	return objectLst, nil
 }
 
 func GetCustomerWithID(id string) (objects.Customer, error) {
@@ -166,7 +166,7 @@ func GetCustomerWithID(id string) (objects.Customer, error) {
 		}
 	}
 
-	return temp, customStatus.ExistCustomer
+	return temp, nil
 }
 
 func GetAllCustomers() ([]objects.Customer, error) {
@@ -194,5 +194,51 @@ func GetAllCustomers() ([]objects.Customer, error) {
 		objectLst = append(objectLst, temp)
 	}
 
-	return objectLst, customStatus.ExistUser
+	return objectLst, nil
+}
+
+func InsertCustomer(customer objects.Customer) (objects.Customer, error) {
+
+	var count int
+	row := db.QueryRow("SELECT COUNT(*) FROM customer WHERE email = ?", customer.Email)
+
+	if err := row.Scan(&count); err != nil {
+		return objects.Customer{}, err
+
+	} else {
+		if count > 0 {
+			return objects.Customer{}, customStatus.ExistCustomer
+		}
+	}
+
+	var temp objects.Customer
+
+	result, err := db.Exec(
+		"INSERT INTO customer (firstName,lastName,dateOfBirth,email,nationality,address) VALUES (?,?,?,?,?,?)", customer.LastName,
+		customer.FirstName,
+		customer.DateOfBirth,
+		customer.Email,
+		customer.Nationality,
+		customer.Address,
+	)
+
+	if err != nil {
+		return objects.Customer{}, err
+	}
+
+	id, err := result.LastInsertId()
+	if err != nil {
+		return objects.Customer{}, err
+	}
+
+	temp.Id = int(id)
+	temp.LastName = customer.LastName
+	temp.FirstName = customer.FirstName
+	temp.DateOfBirth = customer.DateOfBirth
+	temp.Email = customer.Email
+	temp.Nationality = customer.Nationality
+	temp.Address = customer.Address
+
+	return temp, nil
+
 }

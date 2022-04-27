@@ -2,6 +2,7 @@ package user
 
 import (
 	dbhandler "e-wallet/api/db"
+	"e-wallet/api/objects"
 	CustomStatus "e-wallet/api/utils"
 	"errors"
 	"net/http"
@@ -14,7 +15,12 @@ func GetUserInfo(c *gin.Context) {
 
 	temp, status := dbhandler.GetUserWithID(id)
 
-	if errors.Is(status, CustomStatus.ExistUser) {
+	if status != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": status.Error()},
+		)
+	} else {
 		c.JSON(
 			http.StatusOK,
 			gin.H{
@@ -27,11 +33,6 @@ func GetUserInfo(c *gin.Context) {
 				// "token":    tokenStr,
 			},
 		)
-	} else {
-		c.JSON(
-			http.StatusBadRequest,
-			gin.H{"status": http.StatusBadRequest, "error": status.Error()},
-		)
 	}
 }
 
@@ -39,7 +40,12 @@ func GetAllUsers(c *gin.Context) {
 
 	users, status := dbhandler.GetAllUsers()
 
-	if errors.Is(status, CustomStatus.ExistUser) {
+	if status != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": status.Error()},
+		)
+	} else {
 		c.JSON(
 			http.StatusOK,
 			gin.H{
@@ -49,11 +55,6 @@ func GetAllUsers(c *gin.Context) {
 				// "token":    tokenStr,
 			},
 		)
-	} else {
-		c.JSON(
-			http.StatusBadRequest,
-			gin.H{"status": http.StatusBadRequest, "error": status.Error()},
-		)
 	}
 }
 
@@ -62,7 +63,12 @@ func GetCustomerInfo(c *gin.Context) {
 
 	temp, status := dbhandler.GetCustomerWithID(id)
 
-	if errors.Is(status, CustomStatus.ExistCustomer) {
+	if status != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": status.Error()},
+		)
+	} else {
 		c.JSON(
 			http.StatusOK,
 			gin.H{
@@ -72,11 +78,6 @@ func GetCustomerInfo(c *gin.Context) {
 				// "token":    tokenStr,
 			},
 		)
-	} else {
-		c.JSON(
-			http.StatusBadRequest,
-			gin.H{"status": http.StatusBadRequest, "error": status.Error()},
-		)
 	}
 }
 
@@ -84,20 +85,51 @@ func GetAllCustomers(c *gin.Context) {
 
 	customers, status := dbhandler.GetAllCustomers()
 
-	if errors.Is(status, CustomStatus.ExistUser) {
+	if status != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": status.Error()},
+		)
+	} else {
 		c.JSON(
 			http.StatusOK,
 			gin.H{
 				"status": http.StatusOK,
 				"error":  "",
 				"data":   customers,
-				// "token":    tokenStr,
 			},
 		)
+	}
+}
+
+func AddCustomers(c *gin.Context) {
+	var customers objects.Customer
+
+	if err := c.BindJSON(&customers); err != nil {
+		return
+	}
+
+	customers, status := dbhandler.InsertCustomer(customers)
+
+	if status != nil {
+		if errors.Is(status, CustomStatus.ExistCustomer) {
+			c.JSON(
+				http.StatusOK,
+				gin.H{"status": http.StatusOK, "error": CustomStatus.UsedEmail.Error()},
+			)
+		} else {
+			c.JSON(
+				http.StatusBadRequest,
+				gin.H{"status": http.StatusBadRequest, "error": status.Error()},
+			)
+		}
 	} else {
 		c.JSON(
-			http.StatusBadRequest,
-			gin.H{"status": http.StatusBadRequest, "error": status.Error()},
+			http.StatusOK,
+			gin.H{
+				"status": http.StatusOK,
+				"error":  "",
+			},
 		)
 	}
 }
