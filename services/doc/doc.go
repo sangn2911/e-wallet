@@ -4,7 +4,6 @@ import (
 	dbdocument "e-wallet/api/db/dbdocument"
 	"e-wallet/api/objects"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,15 +11,7 @@ import (
 func GetDocumentsOfUser(c *gin.Context) {
 	id := c.Param("userid")
 
-	t, err := strconv.Atoi(id)
-	if err != nil {
-		c.JSON(
-			http.StatusBadRequest,
-			gin.H{"status": http.StatusBadRequest, "error": err.Error()},
-		)
-	}
-
-	docs, status := dbdocument.GetDocumentsOfUser(t)
+	docs, status := dbdocument.GetDocumentsOfUser(id)
 
 	if status != nil {
 		c.JSON(

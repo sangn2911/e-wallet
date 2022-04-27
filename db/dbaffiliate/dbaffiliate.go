@@ -33,7 +33,7 @@ func GetAffiliates() ([]objects.Affiliate, error) {
 
 	return affiliates, nil
 }
-func GetAffiliateByID(id int) (objects.Affiliate, error) {
+func GetAffiliateByID(id string) (objects.Affiliate, error) {
 
 	var affi objects.Affiliate
 	row := db.DBconn.QueryRow("SELECT * from affiliate WHERE id = ?", id)
@@ -54,11 +54,9 @@ func GetAffiliateByID(id int) (objects.Affiliate, error) {
 	return affi, nil
 }
 func AddAffiliate(affi objects.Affiliate) (objects.Affiliate, error) {
-
 	var affiliate objects.Affiliate
 	result, err := db.DBconn.Exec(
-		"INSERT INTO affiliate (affiliateName,district,address,phoneNumber,fax, ) VALUES (?,?,?,?,?,?)",
-		affi.Id,
+		"INSERT INTO affiliate (affiname,district,address,phoneNumber,fax,email) VALUES (?,?,?,?,?,?)",
 		affi.AffiliateName,
 		affi.District,
 		affi.Address,
@@ -81,8 +79,8 @@ func AddAffiliate(affi objects.Affiliate) (objects.Affiliate, error) {
 	return affiliate, nil
 }
 
-func DeleteAffiliate(id int) error {
-	_, err := db.DBconn.Exec("DELETE  FROM affiliate WHERE id = ?", id)
+func DeleteAffiliate(id string) error {
+	_, err := db.DBconn.Exec("DELETE FROM affiliate WHERE id = ?", id)
 	if err != nil {
 		return err
 	}

@@ -54,16 +54,16 @@ func GetAllCustomers(c *gin.Context) {
 }
 
 func AddCustomerInfo(c *gin.Context) {
-	var customers objects.Customer
+	var customer objects.Customer
 
-	if err := c.BindJSON(&customers); err != nil {
+	if err := c.BindJSON(&customer); err != nil {
 		c.JSON(
 			http.StatusBadRequest,
 			gin.H{"status": http.StatusBadRequest, "error": err.Error()},
 		)
 	}
 
-	customers, status := dbcustomer.InsertCustomer(customers)
+	customer, status := dbcustomer.InsertCustomer(customer)
 
 	if status != nil {
 		if errors.Is(status, CustomStatus.ExistCustomer) {
@@ -83,6 +83,7 @@ func AddCustomerInfo(c *gin.Context) {
 			gin.H{
 				"status": http.StatusOK,
 				"error":  "",
+				"data":   customer,
 			},
 		)
 	}

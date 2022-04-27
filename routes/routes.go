@@ -3,6 +3,7 @@ package routes
 import (
 	_ "net/http"
 
+	"e-wallet/api/services/affiliate"
 	"e-wallet/api/services/auth"
 	"e-wallet/api/services/customer"
 	"e-wallet/api/services/doc"
@@ -45,5 +46,13 @@ func ApiRoutes(r *gin.Engine) {
 		transAPI.GET("/", transaction.GetAllTransactions)
 		transAPI.POST("/add", transaction.AddTransaction)
 		transAPI.DELETE("/:id", transaction.DeleteTransaction)
+	}
+
+	affisAPI := APIs.Group("/affiliates")
+	{
+		affisAPI.GET("/", affiliate.GetAllAffiliates)
+		affisAPI.GET("/:id", affiliate.GetAffiliateInfo)
+		affisAPI.POST("/add", affiliate.AddAffiliate)
+		affisAPI.DELETE("/:id", affiliate.DeleteAffiliate)
 	}
 }
