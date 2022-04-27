@@ -55,7 +55,7 @@ func RegisterUser(c *gin.Context) {
 		// tokenStr, err := GenerateJWTAuthentication(user.Username, user.Passwd)
 		// user.AuthToken = tokenStr
 		if status != nil {
-			fmt.Println("Error:", status)
+			fmt.Println("Error:", status.Error())
 		}
 
 		c.JSON(
@@ -84,12 +84,17 @@ func LoginUser(c *gin.Context) {
 		if errors.Is(status, CustomStatus.UserNotFound) {
 			c.JSON(
 				http.StatusOK,
-				gin.H{"status": http.StatusOK, "error": status},
+				gin.H{"status": http.StatusOK, "error": status.Error()},
+			)
+		} else if errors.Is(status, CustomStatus.WrongPasswd) {
+			c.JSON(
+				http.StatusOK,
+				gin.H{"status": http.StatusOK, "error": status.Error()},
 			)
 		} else {
 			c.JSON(
 				http.StatusBadRequest,
-				gin.H{"status": http.StatusBadRequest, "error": status},
+				gin.H{"status": http.StatusBadRequest, "error": status.Error()},
 			)
 		}
 	} else {

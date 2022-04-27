@@ -87,10 +87,11 @@ func LoginUser(user objects.User) (objects.User, error) {
 		} else {
 			return objects.User{}, customStatus.WrongPasswd
 		}
-	} else {
+	} else if errors.Is(status, customStatus.UserNotFound) {
 		return user, customStatus.UserNotFound
+	} else {
+		return objects.User{}, status
 	}
-
 }
 
 func IsUserExist(username string) (objects.User, error) {
@@ -126,21 +127,72 @@ func GetUserWithID(id string) (objects.User, error) {
 }
 
 func GetAllUsers() ([]objects.User, error) {
-	userLst := make([]objects.User, 0)
+	objectLst := make([]objects.User, 0)
 	rows, err := db.Query("SELECT id, username, email FROM user")
 
 	if err != nil {
-		return userLst, err
+		return objectLst, err
 	}
 	defer rows.Close()
 
 	for rows.Next() {
 		var temp objects.User
 		if err := rows.Scan(&temp.Id, &temp.Username, &temp.Email); err != nil {
-			return userLst, err
+			return objectLst, err
 		}
-		userLst = append(userLst, temp)
+		objectLst = append(objectLst, temp)
 	}
 
-	return userLst, customStatus.ExistUser
+	return objectLst, customStatus.ExistUser
+}
+
+func GetCustomerWithID(id string) (objects.Customer, error) {
+	var temp objects.Customer
+	row := db.QueryRow("SELECT * FROM customer WHERE id = ?", id)
+
+	if err := row.Scan(
+		&temp.Id,
+		&temp.FirstName,
+		&temp.LastName,
+		&temp.DateOfBirth,
+		&temp.Email,
+		&temp.Nationality,
+		&temp.Address,
+	); err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			return objects.Customer{}, customStatus.CustomerNotFound
+		} else {
+			return objects.Customer{}, err
+		}
+	}
+
+	return temp, customStatus.ExistCustomer
+}
+
+func GetAllCustomers() ([]objects.Customer, error) {
+	objectLst := make([]objects.Customer, 0)
+	rows, err := db.Query("SELECT * FROM customer")
+
+	if err != nil {
+		return objectLst, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var temp objects.Customer
+		if err := rows.Scan(
+			&temp.Id,
+			&temp.FirstName,
+			&temp.LastName,
+			&temp.DateOfBirth,
+			&temp.Email,
+			&temp.Nationality,
+			&temp.Address,
+		); err != nil {
+			return objectLst, err
+		}
+		objectLst = append(objectLst, temp)
+	}
+
+	return objectLst, customStatus.ExistUser
 }

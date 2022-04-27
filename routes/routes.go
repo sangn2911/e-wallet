@@ -20,4 +20,9 @@ func ApiRoutes(r *gin.Engine) {
 		userAuth.GET("/", user.GetAllUsers)
 		userAuth.GET("/:id", user.GetUserInfo)
 	}
+	customerAuth := APIs.Group("/customers")
+	{
+		customerAuth.GET("/", user.GetAllCustomers)
+		customerAuth.GET("/:id", user.GetCustomerInfo)
+	}
 }

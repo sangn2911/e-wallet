@@ -18,10 +18,12 @@ func GetUserInfo(c *gin.Context) {
 		c.JSON(
 			http.StatusOK,
 			gin.H{
-				"status":   http.StatusOK,
-				"error":    "",
-				"username": temp.Username,
-				"email":    temp.Email,
+				"status": http.StatusOK,
+				"error":  "",
+				"data": map[string]interface{}{
+					"username": temp.Username,
+					"email":    temp.Email,
+				},
 				// "token":    tokenStr,
 			},
 		)
@@ -43,7 +45,52 @@ func GetAllUsers(c *gin.Context) {
 			gin.H{
 				"status": http.StatusOK,
 				"error":  "",
-				"users":  users,
+				"data":   users,
+				// "token":    tokenStr,
+			},
+		)
+	} else {
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": status.Error()},
+		)
+	}
+}
+
+func GetCustomerInfo(c *gin.Context) {
+	id := c.Param("id")
+
+	temp, status := dbhandler.GetCustomerWithID(id)
+
+	if errors.Is(status, CustomStatus.ExistCustomer) {
+		c.JSON(
+			http.StatusOK,
+			gin.H{
+				"status": http.StatusOK,
+				"error":  "",
+				"data":   temp,
+				// "token":    tokenStr,
+			},
+		)
+	} else {
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": status.Error()},
+		)
+	}
+}
+
+func GetAllCustomers(c *gin.Context) {
+
+	customers, status := dbhandler.GetAllCustomers()
+
+	if errors.Is(status, CustomStatus.ExistUser) {
+		c.JSON(
+			http.StatusOK,
+			gin.H{
+				"status": http.StatusOK,
+				"error":  "",
+				"data":   customers,
 				// "token":    tokenStr,
 			},
 		)
