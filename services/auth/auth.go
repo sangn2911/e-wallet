@@ -112,30 +112,6 @@ func LoginUser(c *gin.Context) {
 	}
 }
 
-func GetUserInfo(c *gin.Context) {
-	id := c.Param("id")
-
-	temp, status := dbhandler.GetUserWithID(id)
-
-	if errors.Is(status, CustomStatus.ExistUser) {
-		c.JSON(
-			http.StatusOK,
-			gin.H{
-				"status":   http.StatusOK,
-				"error":    "",
-				"username": temp.Username,
-				"email":    temp.Email,
-				// "token":    tokenStr,
-			},
-		)
-	} else {
-		c.JSON(
-			http.StatusBadRequest,
-			gin.H{"status": http.StatusBadRequest, "error": status.Error()},
-		)
-	}
-}
-
 func IsAuthorized() {
 
 }

@@ -20,7 +20,7 @@ func StartSqlConnection() {
 		User:   os.Getenv("DBUSER"),
 		Passwd: os.Getenv("DBPASS"),
 		Net:    "tcp",
-		Addr:   os.Getenv("SQLADDR")+":3306",
+		Addr:   os.Getenv("SQLADDR") + ":3306",
 		DBName: "kaasi",
 	}
 
@@ -112,7 +112,7 @@ func IsUserExist(username string) (objects.User, error) {
 
 func GetUserWithID(id string) (objects.User, error) {
 	var temp objects.User
-	row := db.QueryRow("SELECT * FROM user WHERE id = ?", id)
+	row := db.QueryRow("SELECT id, username, email FROM user WHERE id = ?", id)
 
 	if err := row.Scan(&temp.Id, &temp.Username, &temp.Email); err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -123,4 +123,24 @@ func GetUserWithID(id string) (objects.User, error) {
 	}
 
 	return temp, customStatus.ExistUser
+}
+
+func GetAllUsers() ([]objects.User, error) {
+	userLst := make([]objects.User, 0)
+	rows, err := db.Query("SELECT id, username, email FROM user")
+
+	if err != nil {
+		return userLst, err
+	}
+	defer rows.Close()
+
+	for rows.Next() {
+		var temp objects.User
+		if err := rows.Scan(&temp.Id, &temp.Username, &temp.Email); err != nil {
+			return userLst, err
+		}
+		userLst = append(userLst, temp)
+	}
+
+	return userLst, customStatus.ExistUser
 }

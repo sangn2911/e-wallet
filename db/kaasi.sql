@@ -23,7 +23,7 @@ CREATE TABLE `customer` (
   `firstName` varchar(128) NOT NULL,
   `lastName` varchar(128) NOT NULL,
   `dateOfBirth` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL UNIQUE,
   `nationality` varchar(255) NOT NULL,
   `address` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
@@ -66,6 +66,34 @@ VALUES
   ('user1', 'user1@gmail.com', 'pass1'),
   ('user2', 'user2@gmail.com', 'pass2'),
   ('user3', 'user3@gmail.com', 'pass3');
+
+INSERT INTO
+  `customer` (firstName, lastName, dateOfBirth, email, nationality, address)
+VALUES
+  (
+    'Nguyen',
+    'Customer1',
+    '16/8/1999',
+    'customer1@gmail.com',
+    'Viet Nam',
+    'Ho Chi Minh City'
+  ),
+  (
+    'Nguyen',
+    'Customer2',
+    '16/8/1999',
+    'customer2@gmail.com',
+    'Viet Nam',
+    'Ho Chi Minh City'
+  ),
+  (
+    'Nguyen',
+    'Customer3',
+    '16/8/1999',
+    'customer3@gmail.com',
+    'Viet Nam',
+    'Ho Chi Minh City'
+  );
 
 INSERT INTO
   affiliate (

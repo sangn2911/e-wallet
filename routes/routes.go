@@ -3,7 +3,8 @@ package routes
 import (
 	_ "net/http"
 
-	auth "e-wallet/api/services"
+	"e-wallet/api/services/auth"
+	"e-wallet/api/services/user"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,10 +13,11 @@ func ApiRoutes(r *gin.Engine) {
 
 	APIs := r.Group("/api")
 
-	userAuth := APIs.Group("/user")
+	userAuth := APIs.Group("/users")
 	{
 		userAuth.POST("/register", auth.RegisterUser)
 		userAuth.POST("/login", auth.LoginUser)
-		userAuth.GET("/:id", auth.GetUserInfo)
+		userAuth.GET("/", user.GetAllUsers)
+		userAuth.GET("/:id", user.GetUserInfo)
 	}
 }
