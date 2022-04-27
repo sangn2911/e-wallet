@@ -22,6 +22,7 @@ func GetDocumentsOfUser(userid int) ([]objects.Document, error) {
 			&doc.IssuingAuthority,
 			&doc.ExpiryDate,
 			&doc.Img,
+			&doc.UserId,
 		); err != nil {
 			return docs, err
 		}
@@ -36,13 +37,13 @@ func AddDocument(doc objects.Document) (objects.Document, error) {
 	var temp objects.Document
 
 	result, err := db.DBconn.Exec(
-		"INSERT INTO document (docType,docNumber,issuingAuthority,expiryDate,img,userid) VALUES (?,?,?,?,?)",
-		doc.Id,
+		"INSERT INTO document (docType,docNumber,issuingAuthority,expiryDate,img,userid) VALUES (?,?,?,?,?,?)",
 		doc.DocType,
 		doc.DocNumber,
 		doc.IssuingAuthority,
 		doc.ExpiryDate,
-		doc.Img, doc.UserId,
+		doc.Img,
+		doc.UserId,
 	)
 	if err != nil {
 		return doc, err

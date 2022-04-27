@@ -47,7 +47,7 @@ func AddDocumentInfo(c *gin.Context) {
 		return
 	}
 
-	_, status := dbdocument.AddDocument(doc)
+	doc, status := dbdocument.AddDocument(doc)
 
 	if status != nil {
 		c.JSON(
@@ -60,6 +60,7 @@ func AddDocumentInfo(c *gin.Context) {
 			gin.H{
 				"status": http.StatusOK,
 				"error":  "",
+				"data":   doc,
 			},
 		)
 	}
