@@ -11,6 +11,8 @@ import (
 
 func ApiRoutes(r *gin.Engine) {
 
+	r.GET("/", auth.WelcomeAPI)
+
 	APIs := r.Group("/api")
 
 	userAuth := APIs.Group("/users")
@@ -24,6 +26,7 @@ func ApiRoutes(r *gin.Engine) {
 	{
 		customerAuth.GET("/", user.GetAllCustomers)
 		customerAuth.GET("/:id", user.GetCustomerInfo)
-		customerAuth.POST("/add", user.AddCustomers)
+		customerAuth.POST("/add", user.AddCustomerInfo)
+		customerAuth.PUT("/update", user.EditCustomerInfo)
 	}
 }

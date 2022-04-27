@@ -1,7 +1,7 @@
 package main
 
 import (
-	dbhandler "e-wallet/api/db"
+	dbconn "e-wallet/api/db"
 	"e-wallet/api/routes"
 	customStatus "e-wallet/api/utils"
 	"os"
@@ -12,7 +12,7 @@ import (
 
 func main() {
 	customStatus.InitCustomStatus()
-	dbhandler.StartSqlConnection()
+	dbconn.StartSqlConnection()
 	// run api
 	router := gin.Default()
 	router.Use(cors.Default())

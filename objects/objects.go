@@ -45,3 +45,18 @@ type Document struct {
 	ExpiryDate       string `json:"expiryDate"`
 	Img              string `json:"img"`
 }
+
+func (customer *Customer) Clone(obj Customer) {
+	customer.LastName = obj.LastName
+	customer.FirstName = obj.FirstName
+	customer.DateOfBirth = obj.DateOfBirth
+	customer.Email = obj.Email
+	customer.Nationality = obj.Nationality
+	customer.Address = obj.Address
+}
+
+func (user *User) Clone(obj User) {
+	user.Username = obj.Username
+	user.Email = obj.Email
+	user.Passwd = obj.Passwd
+}

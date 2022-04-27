@@ -1,7 +1,8 @@
 package user
 
 import (
-	dbhandler "e-wallet/api/db"
+	dbcustomer "e-wallet/api/db/dbcustomer"
+	dbuser "e-wallet/api/db/dbuser"
 	"e-wallet/api/objects"
 	CustomStatus "e-wallet/api/utils"
 	"errors"
@@ -13,7 +14,7 @@ import (
 func GetUserInfo(c *gin.Context) {
 	id := c.Param("id")
 
-	temp, status := dbhandler.GetUserWithID(id)
+	temp, status := dbuser.GetUserWithID(id)
 
 	if status != nil {
 		c.JSON(
@@ -38,7 +39,7 @@ func GetUserInfo(c *gin.Context) {
 
 func GetAllUsers(c *gin.Context) {
 
-	users, status := dbhandler.GetAllUsers()
+	users, status := dbuser.GetAllUsers()
 
 	if status != nil {
 		c.JSON(
@@ -61,7 +62,7 @@ func GetAllUsers(c *gin.Context) {
 func GetCustomerInfo(c *gin.Context) {
 	id := c.Param("id")
 
-	temp, status := dbhandler.GetCustomerWithID(id)
+	temp, status := dbcustomer.GetCustomerWithID(id)
 
 	if status != nil {
 		c.JSON(
@@ -83,7 +84,7 @@ func GetCustomerInfo(c *gin.Context) {
 
 func GetAllCustomers(c *gin.Context) {
 
-	customers, status := dbhandler.GetAllCustomers()
+	customers, status := dbcustomer.GetAllCustomers()
 
 	if status != nil {
 		c.JSON(
@@ -102,14 +103,14 @@ func GetAllCustomers(c *gin.Context) {
 	}
 }
 
-func AddCustomers(c *gin.Context) {
+func AddCustomerInfo(c *gin.Context) {
 	var customers objects.Customer
 
 	if err := c.BindJSON(&customers); err != nil {
 		return
 	}
 
-	customers, status := dbhandler.InsertCustomer(customers)
+	customers, status := dbcustomer.InsertCustomer(customers)
 
 	if status != nil {
 		if errors.Is(status, CustomStatus.ExistCustomer) {
@@ -129,6 +130,32 @@ func AddCustomers(c *gin.Context) {
 			gin.H{
 				"status": http.StatusOK,
 				"error":  "",
+			},
+		)
+	}
+}
+
+func EditCustomerInfo(c *gin.Context) {
+	var customers objects.Customer
+
+	if err := c.BindJSON(&customers); err != nil {
+		return
+	}
+
+	customer, status := dbcustomer.EditCustomerInfo(customers)
+
+	if status != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": status.Error()},
+		)
+	} else {
+		c.JSON(
+			http.StatusOK,
+			gin.H{
+				"status": http.StatusOK,
+				"error":  "",
+				"data":   customer,
 			},
 		)
 	}

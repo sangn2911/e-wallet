@@ -1,7 +1,7 @@
 package auth
 
 import (
-	dbhandler "e-wallet/api/db"
+	dbuser "e-wallet/api/db/dbuser"
 	"e-wallet/api/objects"
 	CustomStatus "e-wallet/api/utils"
 	"errors"
@@ -11,6 +11,13 @@ import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/golang-jwt/jwt"
 )
+
+func WelcomeAPI(c *gin.Context) {
+	c.JSON(
+		http.StatusOK,
+		"Welcome",
+	)
+}
 
 // func GenerateJWTAuthentication(username string, password string) (string, error) {
 // 	token := jwt.New(jwt.SigningMethodHS256)
@@ -37,7 +44,7 @@ func RegisterUser(c *gin.Context) {
 		return
 	}
 
-	user, status := dbhandler.RegisterUser(user)
+	user, status := dbuser.RegisterUser(user)
 
 	if status != nil {
 		if errors.Is(status, CustomStatus.ExistUser) {
@@ -75,7 +82,7 @@ func LoginUser(c *gin.Context) {
 		return
 	}
 
-	user, status := dbhandler.LoginUser(user)
+	user, status := dbuser.LoginUser(user)
 
 	if status != nil {
 		if errors.Is(status, CustomStatus.UserNotFound) {
