@@ -36,7 +36,7 @@ func GetAllCustomers() ([]objects.Customer, error) {
 	return objectLst, nil
 }
 
-func GetCustomerWithID(id int) (objects.Customer, error) {
+func GetCustomerWithID(id string) (objects.Customer, error) {
 	var temp objects.Customer
 	row := db.DBconn.QueryRow("SELECT * FROM customer WHERE id = ?", id)
 
@@ -122,7 +122,7 @@ func EditCustomerInfo(customer objects.Customer) (objects.Customer, error) {
 	return temp, nil
 }
 
-func DeleteCustomer(id string) error {
+func DeleteCustomer(id int) error {
 	_, err := db.DBconn.Exec("DELETE FROM customer WHERE id=?", id)
 	if err != nil {
 		return err

@@ -11,13 +11,13 @@ import (
 )
 
 func GetCustomerInfo(c *gin.Context) {
-	var id int
-	if err := c.BindJSON(&id); err != nil {
-		c.JSON(
-			http.StatusBadRequest,
-			gin.H{"status": http.StatusBadRequest, "error": err.Error()},
-		)
-	}
+	var id string = c.Param("id")
+	// if err := c.BindJSON(&id); err != nil {
+	// 	c.JSON(
+	// 		http.StatusBadRequest,
+	// 		gin.H{"status": http.StatusBadRequest, "error": err.Error()},
+	// 	)
+	// }
 
 	temp, status := dbcustomer.GetCustomerWithID(id)
 	if status != nil {
@@ -119,7 +119,7 @@ func EditCustomerInfo(c *gin.Context) {
 }
 
 func DeleteCustomerInfo(c *gin.Context) {
-	var id string
+	var id int
 	if err := c.BindJSON(&id); err != nil {
 		c.JSON(
 			http.StatusBadRequest,

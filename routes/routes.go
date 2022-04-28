@@ -10,7 +10,6 @@ import (
 	"e-wallet/api/services/transaction"
 	"e-wallet/api/services/user"
 
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -18,7 +17,6 @@ func ApiRoutes(r *gin.Engine) {
 	APIs := r.Group("/api")
 
 	userAPI := APIs.Group("/user")
-	userAPI.Use(cors.Default())
 	{
 		userAPI.POST("/register", auth.RegisterUser)
 		userAPI.POST("/login", auth.LoginUser)
@@ -27,7 +25,6 @@ func ApiRoutes(r *gin.Engine) {
 	}
 
 	customerAPI := APIs.Group("/customer")
-	customerAPI.Use(cors.Default())
 	{
 		customerAPI.GET("", customer.GetAllCustomers)
 		customerAPI.GET("/:id", customer.GetCustomerInfo)
@@ -36,14 +33,13 @@ func ApiRoutes(r *gin.Engine) {
 		customerAPI.DELETE("", customer.DeleteCustomerInfo)
 	}
 
-	docsAPI := APIs.Group("/docs")
+	docsAPI := APIs.Group("/document")
 	{
 		docsAPI.GET("/:userid", doc.GetDocumentsOfUser)
 		docsAPI.POST("", doc.AddDocumentInfo)
 	}
 
 	transAPI := APIs.Group("/transactions")
-	transAPI.Use(cors.Default())
 	{
 		transAPI.GET("", transaction.GetAllTransactions)
 		transAPI.POST("", transaction.AddTransaction)

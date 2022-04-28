@@ -75,7 +75,7 @@ func IsUserExist(username string) (objects.User, error) {
 	return temp, customStatus.ExistUser
 }
 
-func GetUserWithID(id int) (objects.User, error) {
+func GetUserWithID(id string) (objects.User, error) {
 	var temp objects.User
 	row := db.DBconn.QueryRow("SELECT id, username, email FROM user WHERE id = ?", id)
 

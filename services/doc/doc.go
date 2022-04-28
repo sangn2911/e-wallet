@@ -9,13 +9,7 @@ import (
 )
 
 func GetDocumentsOfUser(c *gin.Context) {
-	var id int
-	if err := c.BindJSON(&id); err != nil {
-		c.JSON(
-			http.StatusBadRequest,
-			gin.H{"status": http.StatusBadRequest, "error": err.Error()},
-		)
-	}
+	id := c.Param("userid")
 
 	docs, status := dbdocument.GetDocumentsOfUser(id)
 	if status != nil {
@@ -38,11 +32,18 @@ func GetDocumentsOfUser(c *gin.Context) {
 
 func AddDocumentInfo(c *gin.Context) {
 	var doc objects.Document
+
 	if err := c.BindJSON(&doc); err != nil {
-		return
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": err.Error()},
+		)
 	}
 
+	print(doc.UserId)
+
 	doc, status := dbdocument.AddDocument(doc)
+
 	if status != nil {
 		c.JSON(
 			http.StatusBadRequest,

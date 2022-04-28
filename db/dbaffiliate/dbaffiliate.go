@@ -79,7 +79,7 @@ func AddAffiliate(affi objects.Affiliate) (objects.Affiliate, error) {
 	return affiliate, nil
 }
 
-func DeleteAffiliate(id string) error {
+func DeleteAffiliate(id int) error {
 	_, err := db.DBconn.Exec("DELETE FROM affiliate WHERE id = ?", id)
 	if err != nil {
 		return err

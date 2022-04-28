@@ -81,7 +81,14 @@ func AddAffiliate(c *gin.Context) {
 }
 
 func DeleteAffiliate(c *gin.Context) {
-	id := c.Param("id")
+	var id int
+	if err := c.BindJSON(&id); err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": err.Error()},
+		)
+	}
+
 	status := dbaffiliate.DeleteAffiliate(id)
 
 	if status != nil {

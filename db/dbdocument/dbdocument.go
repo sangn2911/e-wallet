@@ -5,9 +5,10 @@ import (
 	"e-wallet/api/objects"
 )
 
-func GetDocumentsOfUser(userid int) ([]objects.Document, error) {
+func GetDocumentsOfUser(userid string) ([]objects.Document, error) {
 	docs := []objects.Document{}
 	rows, err := db.DBconn.Query("SELECT * FROM document WHERE userid = ?", userid)
+
 	if err != nil {
 		return docs, err
 	}
