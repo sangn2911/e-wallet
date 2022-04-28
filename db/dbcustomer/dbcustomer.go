@@ -36,7 +36,7 @@ func GetAllCustomers() ([]objects.Customer, error) {
 	return objectLst, nil
 }
 
-func GetCustomerWithID(id string) (objects.Customer, error) {
+func GetCustomerWithID(id int) (objects.Customer, error) {
 	var temp objects.Customer
 	row := db.DBconn.QueryRow("SELECT * FROM customer WHERE id = ?", id)
 

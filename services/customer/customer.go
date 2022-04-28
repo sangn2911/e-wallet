@@ -11,10 +11,15 @@ import (
 )
 
 func GetCustomerInfo(c *gin.Context) {
-	id := c.Param("id")
+	var id int
+	if err := c.BindJSON(&id); err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": err.Error()},
+		)
+	}
 
 	temp, status := dbcustomer.GetCustomerWithID(id)
-
 	if status != nil {
 		c.JSON(
 			http.StatusBadRequest,
@@ -35,7 +40,6 @@ func GetCustomerInfo(c *gin.Context) {
 
 func GetAllCustomers(c *gin.Context) {
 	customers, status := dbcustomer.GetAllCustomers()
-
 	if status != nil {
 		c.JSON(
 			http.StatusBadRequest,
@@ -55,7 +59,6 @@ func GetAllCustomers(c *gin.Context) {
 
 func AddCustomerInfo(c *gin.Context) {
 	var customer objects.Customer
-
 	if err := c.BindJSON(&customer); err != nil {
 		c.JSON(
 			http.StatusBadRequest,
@@ -64,7 +67,6 @@ func AddCustomerInfo(c *gin.Context) {
 	}
 
 	customer, status := dbcustomer.InsertCustomer(customer)
-
 	if status != nil {
 		if errors.Is(status, CustomStatus.ExistCustomer) {
 			c.JSON(
@@ -91,7 +93,6 @@ func AddCustomerInfo(c *gin.Context) {
 
 func EditCustomerInfo(c *gin.Context) {
 	var customers objects.Customer
-
 	if err := c.BindJSON(&customers); err != nil {
 		c.JSON(
 			http.StatusBadRequest,
@@ -100,7 +101,6 @@ func EditCustomerInfo(c *gin.Context) {
 	}
 
 	customer, status := dbcustomer.EditCustomerInfo(customers)
-
 	if status != nil {
 		c.JSON(
 			http.StatusBadRequest,
@@ -119,10 +119,15 @@ func EditCustomerInfo(c *gin.Context) {
 }
 
 func DeleteCustomerInfo(c *gin.Context) {
-	id := c.Param("id")
+	var id string
+	if err := c.BindJSON(&id); err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": err.Error()},
+		)
+	}
 
 	status := dbcustomer.DeleteCustomer(id)
-
 	if status != nil {
 		c.JSON(
 			http.StatusBadRequest,

@@ -8,10 +8,15 @@ import (
 )
 
 func GetUserInfo(c *gin.Context) {
-	id := c.Param("id")
+	var id int
+	if err := c.BindJSON(&id); err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": err.Error()},
+		)
+	}
 
 	temp, status := dbuser.GetUserWithID(id)
-
 	if status != nil {
 		c.JSON(
 			http.StatusBadRequest,
@@ -34,7 +39,6 @@ func GetUserInfo(c *gin.Context) {
 }
 
 func GetAllUsers(c *gin.Context) {
-
 	users, status := dbuser.GetAllUsers()
 
 	if status != nil {

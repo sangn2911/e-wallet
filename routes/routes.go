@@ -10,15 +10,15 @@ import (
 	"e-wallet/api/services/transaction"
 	"e-wallet/api/services/user"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
 func ApiRoutes(r *gin.Engine) {
-
-	r.GET("/", auth.WelcomeAPI)
 	APIs := r.Group("/api")
 
-	userAPI := APIs.Group("/users")
+	userAPI := APIs.Group("/user")
+	userAPI.Use(cors.Default())
 	{
 		userAPI.POST("/register", auth.RegisterUser)
 		userAPI.POST("/login", auth.LoginUser)
@@ -26,33 +26,35 @@ func ApiRoutes(r *gin.Engine) {
 		userAPI.GET("/:id", user.GetUserInfo)
 	}
 
-	customerAPI := APIs.Group("/customers")
+	customerAPI := APIs.Group("/customer")
+	customerAPI.Use(cors.Default())
 	{
-		customerAPI.GET("/", customer.GetAllCustomers)
+		customerAPI.GET("", customer.GetAllCustomers)
 		customerAPI.GET("/:id", customer.GetCustomerInfo)
-		customerAPI.POST("/add", customer.AddCustomerInfo)
-		customerAPI.PUT("/update", customer.EditCustomerInfo)
-		customerAPI.DELETE("/:id", customer.DeleteCustomerInfo)
+		customerAPI.POST("", customer.AddCustomerInfo)
+		customerAPI.PUT("", customer.EditCustomerInfo)
+		customerAPI.DELETE("", customer.DeleteCustomerInfo)
 	}
 
 	docsAPI := APIs.Group("/docs")
 	{
 		docsAPI.GET("/:userid", doc.GetDocumentsOfUser)
-		docsAPI.POST("/add", doc.AddDocumentInfo)
+		docsAPI.POST("", doc.AddDocumentInfo)
 	}
 
 	transAPI := APIs.Group("/transactions")
+	transAPI.Use(cors.Default())
 	{
-		transAPI.GET("/", transaction.GetAllTransactions)
-		transAPI.POST("/add", transaction.AddTransaction)
-		transAPI.DELETE("/:id", transaction.DeleteTransaction)
+		transAPI.GET("", transaction.GetAllTransactions)
+		transAPI.POST("", transaction.AddTransaction)
+		transAPI.DELETE("", transaction.DeleteTransaction)
 	}
 
 	affisAPI := APIs.Group("/affiliates")
 	{
-		affisAPI.GET("/", affiliate.GetAllAffiliates)
+		affisAPI.GET("", affiliate.GetAllAffiliates)
 		affisAPI.GET("/:id", affiliate.GetAffiliateInfo)
-		affisAPI.POST("/add", affiliate.AddAffiliate)
-		affisAPI.DELETE("/:id", affiliate.DeleteAffiliate)
+		affisAPI.POST("", affiliate.AddAffiliate)
+		affisAPI.DELETE("", affiliate.DeleteAffiliate)
 	}
 }
