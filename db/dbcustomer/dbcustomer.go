@@ -104,18 +104,19 @@ func EditCustomerInfo(customer objects.Customer) (objects.Customer, error) {
 	var temp objects.Customer
 
 	_, err := db.DBconn.Exec(
-		"UPDATE customer SET firstName=?,lastName=?,dateOfBirth=?,email=?,nationality=?,address=? WHERE id = ?",
-		temp.FirstName,
-		temp.LastName,
-		temp.DateOfBirth,
-		temp.Email,
-		temp.Nationality,
-		temp.Address,
-		temp.Id,
+		"UPDATE customer SET firstName = ?,lastName = ?,dateOfBirth = ?,email = ?,nationality = ?,address = ? WHERE id = ?",
+		customer.FirstName,
+		customer.LastName,
+		customer.DateOfBirth,
+		customer.Email,
+		customer.Nationality,
+		customer.Address,
+		customer.Id,
 	)
 	if err != nil {
 		return customer, err
 	}
+	println(customer.Id)
 
 	temp.Id = customer.Id
 	temp.Clone(customer)

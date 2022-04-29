@@ -29,7 +29,7 @@ func ApiRoutes(r *gin.Engine) {
 		customerAPI.GET("", customer.GetAllCustomers)
 		customerAPI.GET("/:id", customer.GetCustomerInfo)
 		customerAPI.POST("", customer.AddCustomerInfo)
-		customerAPI.PUT("", customer.EditCustomerInfo)
+		customerAPI.PUT("/:id", customer.EditCustomerInfo)
 		customerAPI.DELETE("", customer.DeleteCustomerInfo)
 	}
 

@@ -6,6 +6,7 @@ import (
 	CustomStatus "e-wallet/api/utils"
 	"errors"
 	"net/http"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -92,8 +93,18 @@ func AddCustomerInfo(c *gin.Context) {
 }
 
 func EditCustomerInfo(c *gin.Context) {
+	var id string = c.Param("id")
 	var customers objects.Customer
 	if err := c.BindJSON(&customers); err != nil {
+		c.JSON(
+			http.StatusBadRequest,
+			gin.H{"status": http.StatusBadRequest, "error": err.Error()},
+		)
+	}
+
+	var err error
+	customers.Id, err = strconv.Atoi(id)
+	if err != nil {
 		c.JSON(
 			http.StatusBadRequest,
 			gin.H{"status": http.StatusBadRequest, "error": err.Error()},
